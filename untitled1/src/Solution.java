@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Solution {
     public String replaceSpace(StringBuffer str) {
@@ -319,9 +317,83 @@ public class Solution {
         }
         return 0;
     }
+
+    /**
+     * 将一个字符串转换成一个整数，要求不能使用字符串转换整数的库函数。 数值为0或者字符串不是一个合法的数值则返回0
+     * @param str
+     * @return
+     */
+    public int StrToInt(String str) {
+return 0;
+    }
+
+    /**
+     * 求1+2+3+...+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+     * @param n
+     * @return
+     */
+    public int Sum_Solution(int n) {
+        int sum=n;
+        /*i==0 ? (i =i+ Sum_Solution(n-1)):i=i;*/
+       // boolean ans=(n>0) && ((sum+=Sum_Solution(n-1))>0);
+        sum=(n>0)?(sum+=Sum_Solution(n-1)):sum;
+        return sum;
+
+    }
+
+    /**
+     * 随机指定一个数m,让编号为0的小朋友开始报数。每次喊到m-1的那个小朋友要出列并且不再回到圈中,从他的下一个开始,继续0...m-1报数
+     * 直到剩下最后一个小朋友,哪个小朋友会得到这份礼品呢？(注：小朋友的编号是从0到n-1)
+     *
+     * 如果没有小朋友，请返回-1
+     * @param n
+     * @param m
+     * @return
+     */
+    public int LastRemaining_Solution(int n, int m) {
+        /*int last=n;
+        Map<Integer,Boolean> map=new HashMap<>();
+        for (int i=0;i<n;i++){
+            map.put(i,true);
+        }
+        while (last<1){
+            for (int i=0;i<n;i++){
+
+            }
+            n--;
+        }*/
+        /*if (n<=0)return -1;
+
+        int now=0;
+        int all=n;
+        for (int i=0;i<all-1;i++){
+
+        }*/
+        /*List<ListNode> listNodes=new ArrayList<>();*/
+        if (n < 1 || m < 1) {
+            return -1;
+        }
+        List<Integer> list = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(i);
+        }
+        // 要删除元素的位置
+        int idx = 0;
+        // 开始计数的位置
+        int start = 0;
+        while (list.size() > 1) {
+            // 只要移动m-1次就可以移动到下一个要删除的元素上
+            for (int i = 1; i < m; i++) {
+                idx = (idx + 1) % list.size(); // 【A】
+            }
+            list.remove(idx);
+
+        }
+        return list.get(0);
+    }
     public static void main(String[] args) {
         Solution solution=new Solution();
-        System.out.println(solution.NumberOf2(5));
+        System.out.println(solution.LastRemaining_Solution(7,5));
     }
 }
 
