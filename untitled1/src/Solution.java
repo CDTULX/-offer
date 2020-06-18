@@ -391,9 +391,168 @@ return 0;
         }
         return list.get(0);
     }
+
+    /**
+     * 牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，写些句子在本子上。同事Cat对Fish写的内容颇感兴趣，有一天他向Fish借来翻看，但却读不懂它的意思。例如，“student. a am I”。后来才意识到，这家伙原来把句子单词的顺序翻转了，正确的句子应该是“I am a student.”。Cat对一一的翻转这些单词顺序可不在行，你能帮助他么？
+     * @param str
+     * @return
+     */
+    public String ReverseSentence(String str) {
+        if (str==null)return null;
+        String[] strings=str.split(" ");
+        if (strings.length==0)return str;
+        for (int i=0;i<strings.length;i++) System.out.println(strings[i]);
+        //String s="";
+        for (int i=strings.length;i>0;i--){
+            System.out.println(strings[i-1]);
+           // s=s+strings[i];
+        }
+        return null;
+    }
+
+    /**
+     * 汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，就是用字符串模拟这个指令的运算结果。对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。是不是很简单？OK，搞定它！
+     * @param str
+     * @param n
+     * @return
+     */
+    public String LeftRotateString(String str,int n) {
+        char[] chars=str.toCharArray();
+        if (chars.length==0){
+            String s="";
+            for (int i=0;i<n;i++){
+                s+=s;
+            }
+            return s;
+        }
+        String s="";
+
+        int m=n%(chars.length);
+
+       /* for (i;i<chars.length+m-1;i++){
+            s=s+chars[i];
+        }*/
+        for (int i=m-1;i<chars.length+m-1;i++){
+            s=s+chars[i%chars.length];
+        }
+        return s;
+
+    }
+
+    /**
+     * 输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的
+     * @param array
+     * @param sum
+     * @return
+     */
+    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) {
+        ArrayList<Integer> arrayList=new ArrayList<>();
+        ArrayList<Integer> sout=new ArrayList<>();
+
+        for (int i=0;i<array.length&&array[i]<sum;i++){
+            for (int j=array.length-1;j>i;j--){
+                if (array[i]+array[j]==sum){
+                    arrayList.add(array[i]);
+                    arrayList.add(array[j]);
+                }
+            }
+        }
+        int min=999;
+        sout.add(1);
+        sout.add(2);
+        if (arrayList.size()==2||arrayList.size()==0)return arrayList;
+        for (int i=0;i<arrayList.size();i+=2){
+            if (arrayList.get(i)*arrayList.get(i+1)<min){
+                sout.remove(0);
+                min=arrayList.get(i)*arrayList.get(i+1);
+                sout.remove(0);
+                sout.add(arrayList.get(i));
+                sout.add(arrayList.get(i+1));
+            }
+        }
+        /*{        arrayList.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+
+                int i=o1>o2?1:-1;
+                return i;
+            }
+        });*/
+        return sout;
+    }
+
+    /**
+     * 小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,他马上就写出了正确答案是100。
+     * 但是他并不满足于此,他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。没多久,
+     * 他就得到另一组连续正数和为100的序列:18,19,20,21,22。现在把问题交给你,你能不能也很快
+     * 的找出所有和为S的连续正数序列? Good Luck!
+     * @param sum
+     * @return
+     */
+    public ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> returnArry=new ArrayList<ArrayList<Integer>>();
+        if (sum<=1)return returnArry;
+        int theSum=0;
+        for (int i=1;i<100;i++) {
+            for (int j=i;theSum<100||j<100;j++){
+                theSum+=j;
+                if (theSum==sum){
+                    ArrayList<Integer> arrayList=new ArrayList<>();
+                    for (int n=i;n<j;n++){
+                        arrayList.add(n);
+                    }
+                    if (arrayList.size()>=2){
+
+                        returnArry.add(arrayList);
+                    }
+                }
+            }
+            theSum=0;
+        }
+
+        return returnArry;
+    }
+
+    //num1,num2分别为长度为1的数组。传出参数
+    //将num1[0],num2[0]设置为返回结果
+    /**
+     * 一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+     * @param array
+     * @param num1
+     * @param num2
+     */
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+      /*  Map<Integer,Boolean> map=new HashMap<Integer,Boolean>();
+        for (int i=0;i<array.length;i++){
+            if (map.get(i)==null){
+                map.put(i,true);
+            }
+            if (map.get(i)!=null){
+                map.remove(i);
+            }
+        }
+        for (Map.Entry<Integer,Boolean> map1:map.entrySet()){
+            if (num1==null){
+                num1=num1+map1.getKey();
+            }
+        }
+*/
+        ArrayList<Integer> arrayList=new ArrayList<>();
+        for (int i=0;i<array.length;i++){
+            if (!arrayList.contains(array[i]))arrayList.add(array[i]);
+            else arrayList.remove(new Integer(array[i]));
+        }
+        if (arrayList.size()>0){
+            num1[0]=arrayList.get(0);
+            num2[0]=arrayList.get(1);
+        }
+
+
+    }
+
     public static void main(String[] args) {
         Solution solution=new Solution();
-        System.out.println(solution.LastRemaining_Solution(7,5));
+        System.out.println(solution.FindNumbersWithSum(new int[]{1,2,4,7,11,16},17));
     }
 }
 
