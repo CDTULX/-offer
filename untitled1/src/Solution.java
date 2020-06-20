@@ -550,9 +550,135 @@ return 0;
 
     }
 
+
+
+     public class TreeNode {
+         int val = 0;
+         TreeNode left = null;
+         TreeNode right = null;
+
+         public TreeNode(int val) {
+         this.val = val;
+
+         }
+
+     }
+
+    /**
+     * 输入一棵二叉树，求该树的深度。从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。
+     * @param root
+     * @return
+     */
+    public int TreeDepth(TreeNode root) {
+       if (root ==null)return 0;
+      int left=TreeDepth(root.left);
+      int right=TreeDepth(root.right);
+      return Math.max(left,right)+1;
+    }
+
+    /**
+     * 统计一个数字在排序数组中出现的次数。
+     * @param array
+     * @param k
+     * @return
+     */
+    public int GetNumberOfK(int [] array , int k) {
+        if (array.length<1)return 0;
+        int n=0;
+        for (int i=0;i<array.length;i++){
+            if (array[i]==k)n++;
+        }
+        return n;
+    }
+
+    /**
+     * 输入两个链表，找出它们的第一个公共结点。（注意因为传入数据是链表，所以错误测试数据的提示是用其他方式显示的，保证传入数据是正确的）
+     * @param pHead1
+     * @param pHead2
+     * @return
+     */
+    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+        if (pHead1==null||pHead2==null){
+            return null;
+        }
+        ArrayList<ListNode> arrayList=new ArrayList<>();
+        ListNode node=pHead1;
+        while (node!=null){
+            arrayList.add(node);
+            node=node.next;
+        }
+        while (pHead2!=null){
+            if (arrayList.remove(pHead2)==true)
+                return pHead2;
+            pHead2=pHead2.next;
+        }
+        return null;
+    }
+
+    /**
+     * 在数组中的两个数字，如果前面一个数字大于后面的数字，132,111,为 1 2 3 1 1 1
+     * 则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。
+     * 并将P对1000000007取模的结果输出。 即输出P%1000000007
+     * @param array
+     * @return
+     */
+    public int InversePairs(int [] array) {
+        if (array.length<2)return 0;
+        String s=array.toString();
+        StringBuffer stringBuffer=new StringBuffer("");
+        for (int i=0;i<array.length;i++){
+
+            stringBuffer.append(array[i]);
+        }
+        char[] chars=stringBuffer.toString().toCharArray();
+        int n=0;
+        int i=0;
+        int j=chars.length-1;
+      /*  for (int i=0;i<array.length-1;i++){
+            if (array[i]<array[i+1])n++;
+        }
+        return n%1000000007;*/
+        while (i<=j&&i!=j){
+
+            if (chars[i]>chars[i+1]){
+                n+=(int)chars[i]-'0';
+            }
+            if (chars[j]<chars[j-1]){
+                n+=(int)chars[j-1]-'0';
+            }
+            i++;
+            j--;
+        }
+        for (i=0;i<chars.length;i++){
+            System.out.println(chars[i]);
+        }
+        System.out.println((int)chars[0]+(int)chars[1]);
+        return n%1000000007;
+    }
+
+    /**
+     * 在一个字符串(0<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,
+     * 并返回它的位置, 如果没有则返回 -1（需要区分大小写）.（从0开始计数）
+     * @param str
+     * @return
+     */
+    public int FirstNotRepeatingChar(String str) {
+        if (str.length()==0)
+        return 0;
+        /*char[] chars=str.toCharArray();
+        ArrayList<Character> stringArrayList=new ArrayList<>();
+        for (int i=0;i<chars.length;i++){
+            if (stringArrayList.remove((Character)chars[i])){
+                return i;
+            }
+            else stringArrayList.add((Character)chars[i]);
+        }
+        return -1;*/
+        
+    }
     public static void main(String[] args) {
         Solution solution=new Solution();
-        System.out.println(solution.FindNumbersWithSum(new int[]{1,2,4,7,11,16},17));
+        System.out.println(solution.InversePairs(new int[]{1,2,4,7,15,16}));
     }
 }
 
