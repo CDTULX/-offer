@@ -663,8 +663,10 @@ return 0;
      * @return
      */
     public int FirstNotRepeatingChar(String str) {
-        if (str.length()==0)
-        return 0;
+        if (str.length()==0){
+
+            return 0;
+        }
         /*char[] chars=str.toCharArray();
         ArrayList<Character> stringArrayList=new ArrayList<>();
         for (int i=0;i<chars.length;i++){
@@ -674,11 +676,256 @@ return 0;
             else stringArrayList.add((Character)chars[i]);
         }
         return -1;*/
-        
+        char[] chars=str.toCharArray();
+       /* Map<Integer,Character> map=new HashMap<>();
+        Map<Integer,Character> map2=new HashMap<>();
+        for(int i=0;i<chars.length;i++){
+            if (!map.containsValue(chars[i])){
+                map.put(i,chars[i]);
+            }else map2.put(i,chars[i]);
+        }
+        for (Map.Entry<Integer,Character> entry:map2.entrySet() ){
+            map.remove(entry.getValue());
+        }
+        for (Integer c:map.keySet()){
+            return c;
+        }
+        return 0;*/
+        List<Character> characterList=new ArrayList<>();
+        List<Character> characterList2=new ArrayList<>();
+        for (int i=0;i<chars.length;i++) {
+            if (!characterList.contains(chars[i]))
+            {characterList.add(chars[i]);}
+            else if
+
+        (characterList.contains(chars[i])){
+                    characterList2.add(chars[i]);
+                }
+
+        }
+
+        for (int i=0;i<chars.length;i++){
+            if (!characterList2.contains(chars[i]))
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * 从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+     * @param root
+     * @return
+     */
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+
+        return null;
+    }
+
+    /**
+     * 输入一个正整数数组，把数组里所有数字拼接起来排成一个数，
+     * 打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，
+     * 则打印出这三个数字能排成的最小数字为321323。
+     * @param numbers
+     * @return
+     */
+    public String PrintMinNumber(int [] numbers) {
+        String min=numbers.toString();
+        for (int i=0;i<numbers.length;i++){
+
+        }
+        return null;
+    }
+
+    /**
+     * 求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+     * 为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
+     * 但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,
+     * 可以很快的求出任意非负整数区间中1出现的次数（从1 到 n 中1出现的次数）。
+     * @param n
+     * @return
+     */
+    public int NumberOf1Between1AndN_Solution(int n) {
+        int x=0;
+
+        StringBuffer stringBuffer=new StringBuffer();
+        for (int i=0;i<n;i++){
+            stringBuffer.append(i+"");
+        }
+        char[] chars=stringBuffer.toString().toCharArray();
+        for (int i=0;i<chars.length;i++){
+            if (chars[i]=='1')x++;
+        }
+        return x;
+      /*  char[] chars=strN.toCharArray();
+        for (int i=0;i<n;i++){
+            chars=(i+"").toCharArray();
+            for (int j=0;i<chars.length;j++){
+                if (chars[i]=='1'){
+                    x++;
+                }
+            }
+        }
+        return x;*/
+    }
+
+    /**
+     * 输入一个整形数组（可能有正数和负数），求数组中连续子数组（最少有一个元素）的最大和。要求时间复杂度为O(n)。
+     * @param array
+     * @return
+     */
+    public int FindGreatestSumOfSubArray(int[] array) {
+        int frameSetSum = array[0];
+        int biggestSum = array[0];
+        for (int i = 1; i < array.length; i++)
+        {
+            frameSetSum = Math.max(array[i], frameSetSum + array[i]); //第一个变量大则框集前移，第二个变量大则框集扩增
+            biggestSum = Math.max(biggestSum, frameSetSum); //记录遍历过程中最大的子数组和
+        }
+        return biggestSum;
+    }
+
+    /**
+     * 输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+     * @param input
+     * @param k
+     * @return
+     */
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        if (k > input.length||input.length==0||k<=0)return new ArrayList<>();
+        ArrayList<Integer> arrayList=new ArrayList<>();
+        ArrayList<Integer> arrayList1=new ArrayList<>();
+        for (int i=0;i<input.length;i++){
+            arrayList.add(input[i]);
+        }
+        Collections.sort(arrayList);
+        for (int i=0;i<k;i++){
+            arrayList1.add(arrayList.get(i));
+        }
+        return arrayList1;
+    }
+
+    /**
+     * 数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+     * 例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，
+     * 超过数组长度的一半，因此输出2。如果不存在则输出0。
+     * @param array
+     * @return
+     */
+    public int MoreThanHalfNum_Solution(int [] array) {
+        if (array.length<0)return 0;
+
+        Map<Integer,Integer> integerIntegerMap=new HashMap<>();
+        for (int i=0;i<array.length;i++){
+           if (!integerIntegerMap.containsKey(array[i]))
+               integerIntegerMap.put(array[i],1);
+           else {
+               integerIntegerMap.put(array[i],integerIntegerMap.get(array[i])+1);
+
+           }
+        }
+        for (Map.Entry<Integer,Integer> entry:integerIntegerMap.entrySet()){
+            if (entry.getValue()>array.length/2){
+                return entry.getKey();
+            }
+        }
+        return 0;
+
+    }
+
+    /**
+     * 输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+     * 例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+     * @param str
+     * @return
+     */
+    public ArrayList<String> Permutation(String str) {
+        ArrayList<String> re = new ArrayList<String>();
+        if (str == null || str.length() == 0) {
+            return re;
+        }
+        HashSet<String> set = new HashSet<String>();
+        fun(set, str.toCharArray(), 0);
+        re.addAll(set);
+        Collections.sort(re);
+        return re;
+    }
+    void fun(HashSet<String> re, char[] str, int k) {
+        if (k == str.length) {
+            re.add(new String(str));
+            return;
+        }
+        for (int i = k; i < str.length; i++) {
+            swap(str, i, k);
+            fun(re, str, k + 1);
+            swap(str, i, k);
+        }
+    }
+    void swap(char[] str, int i, int j) {
+        if (i != j) {
+            char t = str[i];
+            str[i] = str[j];
+            str[j] = t;
+        }
+    }
+    /*public ArrayList<String> Permutation(String str) {
+        ArrayList<String> arrayList=new ArrayList<>();
+        List<String> list=new ArrayList<>();
+        char[] chars=str.toCharArray();
+        for (int i=0;i<chars.length;i++){
+            list.add(chars[i]+"");
+        }
+
+    }*/
+ /*   public  static String Permutation_dex(List<String> list,int m){
+        if (list.isEmpty())
+            return null;
+        else {
+            list.remove(m);
+
+        }
+    }*/
+
+    /**
+     * 给你一根长度为n的绳子，请把绳子剪成整数长的m段（m、n都是整数，n>1并且m>1），
+     * 每段绳子的长度记为k[1],...,k[m]。请问k[1]x...xk[m]可能的最大乘积是多少？
+     * 例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+     * @param target
+     * @return
+     */
+    public int cutRope(int target) {
+        if (target==2){
+            return 1;
+        }
+        if (target==3)
+            return 2;
+        if (target%3==0){
+            return (int)Math.pow(3,target/3);
+        }else if (target%3==1){
+            return 4*(int)Math.pow(3,target/3-1);
+        }else if (target%3==2){
+            return 2*(int)Math.pow(3,target/3);
+        }
+        return 0;
+    }
+
+    /**
+     * 地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格，
+     * 但是不能进入行坐标和列坐标的数位之和大于k的格子。
+     * 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。
+     * 但是，它不能进入方格（35,38），因为3+5+3+8 = 19。请问该机器人能够达到多少个格子？
+     * @param threshold
+     * @param rows
+     * @param cols
+     * @return
+     */
+    public int movingCount(int threshold, int rows, int cols)
+    {
+
     }
     public static void main(String[] args) {
         Solution solution=new Solution();
-        System.out.println(solution.InversePairs(new int[]{1,2,4,7,15,16}));
+        //System.out.println(solution.InversePairs(new int[]{1,2,4,7,15,16}));
+        System.out.println(solution.GetLeastNumbers_Solution(new int[]{1,2,4,7,15,16},100));
     }
 }
 
