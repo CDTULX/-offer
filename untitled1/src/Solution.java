@@ -318,14 +318,7 @@ public class Solution {
         return 0;
     }
 
-    /**
-     * 将一个字符串转换成一个整数，要求不能使用字符串转换整数的库函数。 数值为0或者字符串不是一个合法的数值则返回0
-     * @param str
-     * @return
-     */
-    public int StrToInt(String str) {
-return 0;
-    }
+
 
     /**
      * 求1+2+3+...+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
@@ -562,6 +555,8 @@ return 0;
 
          }
 
+         public TreeNode() {
+         }
      }
 
     /**
@@ -920,12 +915,418 @@ return 0;
      */
     public int movingCount(int threshold, int rows, int cols)
     {
+        int sum=0;
+       /* char[] chars=new char[];
+        for ()*/
+        return 1;
+    }
+
+    /**
+     * 请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。
+     * 路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。
+     * 如果一条路径经过了矩阵中的某一个格子，则该路径不能再进入该格子。
+     * 例如 \begin{bmatrix} a & b & c &e \\ s & f & c & s \\ a & d & e& e\\ \end{bmatrix}\quad
+     *    矩阵中包含一条字符串"bcced"的路径，但是矩阵中不包含"abcb"路径，
+     *    因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。
+     *    dfs 回溯
+     * @param matrix
+     * @param rows
+     * @param cols
+     * @param str
+     * @return
+     */
+    public boolean hasPath(char[] matrix, int rows, int cols, char[] str)
+    {
+        //标志位，初始化为false
+        boolean[] flag = new boolean[matrix.length];
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                //循环遍历二维数组，找到起点等于str第一个元素的值，再递归判断四周是否有符合条件的----回溯法
+                if(judge(matrix,i,j,rows,cols,flag,str,0)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //judge(初始矩阵，索引行坐标i，索引纵坐标j，矩阵行数，矩阵列数，待判断的字符串，字符串索引初始为0即先判断字符串的第一位)
+    private boolean judge(char[] matrix,int i,int j,int rows,int cols,boolean[] flag,char[] str,int k){
+        //先根据i和j计算匹配的第一个元素转为一维数组的位置
+        int index = i*cols+j;
+        //递归终止条件
+        if(i<0 || j<0 || i>=rows || j>=cols || matrix[index] != str[k] || flag[index] == true)
+            return false;
+        //若k已经到达str末尾了，说明之前的都已经匹配成功了，直接返回true即可
+        if(k == str.length-1)
+            return true;
+        //要走的第一个位置置为true，表示已经走过了
+        flag[index] = true;
+
+        //回溯，递归寻找，每次找到了就给k加一，找不到，还原
+        if(judge(matrix,i-1,j,rows,cols,flag,str,k+1) ||
+                judge(matrix,i+1,j,rows,cols,flag,str,k+1) ||
+                judge(matrix,i,j-1,rows,cols,flag,str,k+1) ||
+                judge(matrix,i,j+1,rows,cols,flag,str,k+1)  )
+        {
+            return true;
+        }
+        //走到这，说明这一条路不通，还原，再试其他的路径
+        flag[index] = false;
+        return false;
+    }
+
+
+    /**
+     * 如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，
+     * 那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，
+     * 那么中位数就是所有数值排序之后中间两个数的平均值。我们使用Insert()方法读取数据流，
+     * 使用GetMedian()方法获取当前读取数据的中位数。
+     * @param num
+     */
+    public void Insert(Integer num) {
+        if (count %2 == 0){
+            maxHeap.offer(num);
+            int max=maxHeap.poll();
+            minHeap.offer(max);
+        }else {
+            minHeap.offer(num);
+            int min=minHeap.poll();
+            maxHeap.offer(min);
+        }
+        count++;
+    }
+    int count=0;
+    private PriorityQueue<Integer> minHeap=new PriorityQueue<>();
+    private PriorityQueue<Integer> maxHeap=new PriorityQueue<Integer>(15, new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2-o1;
+        }
+    });
+    public Double GetMedian() {
+        if (count%2==0){
+            return new Double(minHeap.peek()+maxHeap.peek())/2;
+
+        }else
+            return new Double(minHeap.peek());
+    }
+
+    /**
+     * 给定一棵二叉搜索树，请找出其中的第k小的结点。
+     * 例如， （5，3，7，2，4，6，8）    中，按结点数值大小顺序第三小结点的值为4。
+     * @param pRoot
+     * @param k
+     * @return
+     */
+    int index=0;
+  /*  TreeNode KthNode(TreeNode pRoot, int k)
+    {
+
+        if(pRoot != null){ //中序遍历寻找第k个
+            TreeNode node = KthNode(pRoot.left,k);//一直查询到左节点，最小的节点
+            if(node != null)
+                return node;
+            index ++;
+            if(index == k)
+                return pRoot;
+            node = KthNode(pRoot.right,k);
+            if(node != null)
+                return node;
+        }
+        return null;
+    }*/
+    TreeNode KthNode(TreeNode pRoot, int k)
+    {
+
+        if (pRoot!=null){
+            TreeNode node=KthNode(pRoot.left,k);
+            if (node!=null){
+                return node;
+            }
+
+            index++;
+            if (index==k){
+                return pRoot;
+            }
+            node=KthNode(pRoot.right,k);
+            if (node!=null){
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。
+     * 也不知道每个数字重复几次。请找出数组中任意一个重复的数字。
+     * 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。
+     * @param numbers
+     * @param length
+     * @param duplication
+     * @return
+     */
+    public boolean duplicate(int numbers[],int length,int [] duplication) {
+        List<Integer> integerList=new ArrayList<>();
+        if (numbers.length==0||length<1)return false;
+
+        int n=0;
+        for (int i=0;i<length;i++){
+            if (integerList.contains(numbers[i])){
+                duplication[n]=numbers[i];
+                System.out.println(numbers[i]);
+                n++;
+            }else integerList.add(numbers[i]);
+        }
+        System.out.println(duplication[0]);
+        return true;
+    }
+
+    /**
+     * 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
+     * 例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+     * 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+     * @param matrix
+     * @return
+     */
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        ArrayList<Integer> arrayList=new ArrayList<>();
+
+        if (matrix.length<=0){
+            return null;
+        }
+        if (matrix.length==1) {
+            arrayList.add(1);
+            return arrayList;
+        }
+        int n=matrix.length;
+        int m=matrix.length;
+        int x=0,y=0;
+        System.out.println(matrix[0][1]);
+        for (int i=0;i<(n-1)/2+1;i++){
+            //向右
+            while (y<=n-1){
+                y++;
+                arrayList.add(matrix[x][y]);
+
+            }y--;
+            n--;
+            //向下
+            while (x<m-1){
+                x++;
+                arrayList.add(matrix[x][y]);
+
+            }m--;
+
+            //向左
+            while (y>=matrix.length-n){
+                y--;
+                arrayList.add(matrix[x][y]);
+
+            }
+            //向上
+            while (x>matrix.length-m){
+                arrayList.add(matrix[x][y]);
+                x--;
+            }
+            y--;
+
+            /*public ArrayList<Integer> printMatrix(int [][] array) {
+                ArrayList<Integer> result = new ArrayList<Integer> ();
+                if(array.length==0) return result;
+                int n = array.length,m = array[0].length;
+                if(m==0) return result;
+                int layers = (Math.min(n,m)-1)/2+1;//这个是层数
+                for(int i=0;i<layers;i++){
+                    for(int k = i;k<m-i;k++) result.add(array[i][k]);//左至右
+                    for(int j=i+1;j<n-i;j++) result.add(array[j][m-i-1]);//右上至右下
+                    for(int k=m-i-2;(k>=i)&&(n-i-1!=i);k--) result.add(array[n-i-1][k]);//右至左
+                    for(int j=n-i-2;(j>i)&&(m-i-1!=i);j--) result.add(array[j][i]);//左下至左上
+                }
+                return result;
+            }*/
+           /* //向右
+            while (matrix[x][y]!=0||y<n){
+                arrayList.add(matrix[x][y]);
+                matrix[x][y]=0;
+                index++;
+                y++;
+            }
+            //向下
+            while (matrix[x][y]!=0||x>=0){
+                arrayList.add(matrix[x][y]);
+                matrix[x][y]=0;
+                index++;
+                x--;
+            }
+            //向左
+            while (matrix[x][y]!=0||y>=0){
+                arrayList.add(matrix[x][y]);
+                matrix[x][y]=0;
+                index++;
+                y--;
+            }
+            //向上
+            while (matrix[x][y]!=0||x<n){
+                arrayList.add(matrix[x][y]);
+                matrix[x][y]=0;
+                index++;
+                x++;
+            }*/
+        }return arrayList;
 
     }
+
+    /**
+     * 在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。
+     * 例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
+     * @param pHead
+     * @return
+     */
+    public ListNode deleteDuplication(ListNode pHead) {
+        if (pHead == null) {
+            return null;
+        }
+
+
+        if (pHead == null || pHead.next == null) {
+            return pHead;
+        }
+        ListNode Head = new ListNode(0);
+        Head.next = pHead;
+        ListNode pre = Head;
+        ListNode last = Head.next;
+        while (last != null) {
+            if (last.next != null && last.val == last.next.val) {
+                // 找到最后的一个相同节点
+                while (last.next != null && last.val == last.next.val) {
+                    last = last.next;
+                }
+                pre.next = last.next;
+                last = last.next;
+            } else {
+                pre = pre.next;
+                last = last.next;
+            }
+        }
+        return Head.next;
+    }
+       /* List<Integer> list=new ArrayList<>();
+        List<Integer> list2=new ArrayList<>();
+        while (pHead.next!=null){
+            if (list.contains(pHead.val)){
+                list2.add(pHead.val);
+            }else list.add(pHead.val);
+            pHead=pHead.next;
+        }
+        ListNode headNode=pHead;
+        ListNode node=pHead.next;
+        ListNode preNode=pHead;
+        pHead=headNode;*/
+       /* while (pHead.next!=null){
+            if (list2.contains(pHead.val)){
+                preNode.next=pHead.next;
+
+                pHead=preNode.next;
+
+            }else pHead=pHead.next;
+            preNode=preNode.next;
+        }*/
+
+       /* while (pHead.next!=null){
+
+
+            if (list2.contains(pHead.next.val)){
+                pHead.next=pHead.next.next;
+
+                pHead=pHead.next;
+
+            }else pHead=pHead.next;
+
+        }
+*/
+       /* while (pHead.next!=null){
+            if (pHead.val==node.val){
+                preNode.next=node.next;
+            }
+            preNode=preNode.next;
+            pHead=node.next;
+            node=pHead.next;
+        }*/
+       /* while (pHead.next!=null){
+            if (pHead.val==pHead.next.val){
+                preNode.next=pHead.next.next;
+            }
+        }*/
+     /*   while (pHead.next!=null){
+            if (pHead.next)
+        }*/
+
+    /**
+     * 将一个字符串转换成一个整数，要求不能使用字符串转换整数的库函数。
+     * 数值为0或者字符串不是一个合法的数值则返回0
+     * @param str
+     * @return
+     */
+    public int StrToInt(String str) {
+        String s="";
+        if (str=="")return 0;
+        boolean num=true;
+        char[] chars=str.toCharArray();
+        if (chars.length<=0)return 0;
+        if (chars[0]=='-'){
+            num=false;
+            chars[0]='0';
+        }
+        if (chars[0]=='+'){
+            chars[0]='0';
+        }
+
+        for (int i=0;i<chars.length;i++){
+            if (chars[i]<='9'&&chars[i]>='0'){
+                s+=chars[i];
+            }else return 0;
+        }
+        if (num)
+            return Integer.parseInt(s);
+        else return (0-Integer.parseInt(s));
+    }
+
+    /**
+     * 输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。
+     * 假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+     * 例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，
+     * 则重建二叉树并返回。
+     * @param pre
+     * @param in
+     * @return
+     */
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        TreeNode root=reConstructBinaryTree(pre,0,pre.length-1,in,0,in.length-1);
+        return root;
+    }
+    //前序遍历{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}
+    private TreeNode reConstructBinaryTree(int [] pre,int startPre,int endPre,int [] in,int startIn,int endIn) {
+
+        if(startPre>endPre||startIn>endIn)
+            return null;
+        TreeNode root=new TreeNode(pre[startPre]);
+
+        for(int i=startIn;i<=endIn;i++)
+            if(in[i]==pre[startPre]){
+                root.left=reConstructBinaryTree(pre,startPre+1,startPre+i-startIn,in,startIn,i-1);
+                root.right=reConstructBinaryTree(pre,i-startIn+startPre+1,endPre,in,i+1,endIn);
+                break;
+            }
+
+        return root;
+    }
+    //import java.util.*;
     public static void main(String[] args) {
         Solution solution=new Solution();
-        //System.out.println(solution.InversePairs(new int[]{1,2,4,7,15,16}));
-        System.out.println(solution.GetLeastNumbers_Solution(new int[]{1,2,4,7,15,16},100));
+        System.out.println(solution.printMatrix(new int[][]{{1,2},{3,4}}));
+        //System.out.println(solution.duplicate(new int[]{2,4,3,1,4},5,new int []{0}));
     }
 }
 
